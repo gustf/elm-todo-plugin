@@ -1,0 +1,12 @@
+{
+  "bundle": "se.infomaker.elm-todo-plugin",
+  "name": "Elm TodoPlugin",
+  "description": "Example Plugin with a TodoMVC app in Elm ",
+  "author": {
+    "name": "Gustaf Andersson",
+    "email": "gustaf.andersson@infomaker.se",
+    "organization": "Infomaker AB",
+    "website": "www.infomaker.se"
+  },
+  "version": "0.0.1"
+}
