@@ -13,6 +13,7 @@ import Elm from 'react-elm-components'
 import {Todo} from '../../../elm/Todo.elm'
 
 ((Dashboard, React) => {
+	const sha1 = require('sha1');
 	const GUI = Dashboard.GUI;
 	/**
 	 * Create an Application by extending the Application class
@@ -21,14 +22,20 @@ import {Todo} from '../../../elm/Todo.elm'
 	class Application extends Dashboard.Application {
 		constructor(props) {
 			super(props)
+
+			
 			this.setupPorts = ports => {
-				this.cache('elmTodoPlugin:storeKey', data => {
-					ports.setModel.send(data ? JSON.parse(data) : null)
-				});
-				ports.setStorage.subscribe(state => {
-					this.send('elmTodoPlugin:todoCount', {todoCount: state.entries.length});
-					this.cache('elmTodoPlugin:storeKey', JSON.stringify(state))
-				})
+				fetch('api/me', {credentials: 'same-origin'})
+					.then(res => res.json())
+					.then(data => sha1(data.user.UUID + '.' +  data.user.organisationUUID))
+					.then(key => {
+						this.cache(key, data => {
+							ports.setModel.send(data ? JSON.parse(data) : null)
+						});	
+						ports.setStorage.subscribe(state => {
+							this.cache(key, JSON.stringify(state))
+						})}
+					)
 			}
 		}
 
@@ -106,7 +113,7 @@ import {Todo} from '../../../elm/Todo.elm'
 	Dashboard.register({
 		// Leave this be and it will fetch the data from your manifest file in the build steps
 		bundle: "@plugin_bundle",
-		
+
 		// Only of of these are actually required. If you are developing a widget, just remove the application and agent.
 		application: Application,
 		widget: Widget,
