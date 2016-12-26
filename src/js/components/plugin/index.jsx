@@ -23,7 +23,6 @@ import {Todo} from '../../../elm/Todo.elm'
 		constructor(props) {
 			super(props)
 
-			
 			this.setupPorts = ports => {
 				fetch('api/me', {credentials: 'same-origin'})
 					.then(res => res.json())
@@ -31,8 +30,9 @@ import {Todo} from '../../../elm/Todo.elm'
 					.then(key => {
 						this.cache(key, data => {
 							ports.setModel.send(data ? JSON.parse(data) : null)
-						});	
+						});
 						ports.setStorage.subscribe(state => {
+							this.send('elmTodoPlugin:todoCount', {todoCount: state.entries.length});
 							this.cache(key, JSON.stringify(state))
 						})}
 					)

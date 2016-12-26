@@ -3,7 +3,7 @@ port module Todo exposing (..)
 {-| TodoMVC implemented in Elm, using plain HTML and CSS for rendering.
 
 This application is broken up into three key parts:
-    
+
   1. Model  - a full definition of the application's state
   2. Update - a way to step the application state forward
   3. View   - a way to visualize our application state with HTML
@@ -206,7 +206,7 @@ update msg model =
 port setModel : (Maybe Model -> msg) -> Sub msg
 
 subscriptions : Model -> Sub Msg
-subscriptions model = 
+subscriptions model =
     setModel SetModel
 
 
